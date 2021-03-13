@@ -38,6 +38,7 @@ app.get("/signup", (req,res)=>{
 
 app.post("/signup", (req,res) => {
     const r_error = [];
+    const exp =/^[a-zA-Z0-9._-]+@[a-z.-]+\.[a-z]{2-5}$/;
 
     if(req.body.f_name == "")
     {
@@ -54,7 +55,6 @@ app.post("/signup", (req,res) => {
         r_error.push({emaile: `This field must be filled.`})
     }
 
-    const exp =/^[a-zA-Z0-9._-]+@[a-z.-]+\.[a-z]{2-5}$/;
     if(req.body.email.match(exp)){
         r_error.push({emaile:"Enter a valid Email address."})
     } 
@@ -76,22 +76,15 @@ app.post("/signup", (req,res) => {
 
     else{
 
-        res.render("login", {
-            title: "log in"
-        })
-        
-        // using Twilio SendGrid's v3 Node.js Library
-        // https://github.com/sendgrid/sendgrid-nodejs
-
+        res.redirect("dashboard");
         // const {f_name, l_name, email} = req.body;
 
 
         // sgMail.setApiKey(API);
         
         // const html = `<bold><h2>Hello ${f_name} ${l_name}</h2></bold>
-        // <br>
         // <h2>You are signed up.          
-        // <br>
+        // <br><br>
         // Regards<br>
         // Parth Patel<br>
         // CEO STREAMDOG
@@ -100,13 +93,16 @@ app.post("/signup", (req,res) => {
 
         // const msg = {
         //   to: `${email}`,
-        //   from: 'parthjpatel00@gmail.com',
+        //   from: {
+        //       name: 'STREAMDOG',
+        //       email: 'parthjpatel00@gmail.com'
+        //   },
         //   subject: 'Welcome to STREAMDOG!',
         //   html: html,
         // };
         // sgMail.send(msg)
         // .then(() => {
-        //     res.redirect("userpage");
+        //     res.redirect("dashboard");
         // })
         // .catch(err => {
         //     console.log(`Error while post: ${err}`);
@@ -118,6 +114,33 @@ app.get("/login", (req,res)=>{
     res.render("login",{
         title: "Log In",
     })
+});
+
+app.post("/login", (req, res) => {
+    const r_error = [];
+
+    if(req.body.email == "")
+    {
+        r_error.push({u_error: `This field must be filed.`})
+    }
+
+    if(req.body.password == "")
+    {
+        r_error.push({p_error: `Password can't be blank.`})    
+    }
+
+    if(r_error.length > 0)
+    {
+        res.render("login", {
+            title: "Log In",
+            errorMessages: r_error
+        })
+    }
+
+    else{
+        res.redirect("dashboard")
+    }
+
 });
 
 app.get("/movies/:id", (req, res) => {
@@ -132,6 +155,12 @@ app.get("/allMovieTV", (req, res) => {
     res.render("movielisting",{
         item: fakeDB.getAllMoviesAndTV(),
         title: "Movies and TV Shows"
+    })
+});
+
+app.get("/dashboard", (req, res) => {
+    res.render("dashboard", {
+        title: "Dashboard"
     })
 })
 
