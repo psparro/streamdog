@@ -1,0 +1,46 @@
+    <br>
+
+    <div class="sec-title">
+      <p>Featured Movies</p>
+    </div>
+
+    <br>
+
+    <div class="display-sec">
+      {{#each featuredMovies}}
+      <div class="display-movie">
+        <a href="/movies/{{this.id}}">
+        <img src="images/regPosters/{{this.poster}}" alt="{{this.movieName}}">
+        <p>{{this.movieName}}</p>
+        </a>
+      </div>
+      {{/each}}
+    </div>
+
+    <br>
+    <div class="content-sec">
+      <img src="images/content/content1.jpg" alt="Content#" class="content-img">
+    </div>
+    <br>
+
+    <div class="sec-title">
+      <p>Featured TV Shows</p>
+    </div>
+
+    <br>
+
+    <div class="display-sec">
+      {{#each featuredTV}}
+      <div class="display-movie">
+        <a href="/movies/{{this.id}}">
+        <img src="images/regPosters/{{this.poster}}" alt="{{this.movieName}}">
+        <p>{{this.movieName}}</p>
+        </a>
+      </div>
+      {{/each}}
+    </div>
+    <br>
+    <div class="content-sec">
+      <img src="images/content/content2.jpg" alt="Content#" class="content-img">
+    </div>
+    <br>

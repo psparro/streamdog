@@ -1,0 +1,23 @@
+<div class="login-container">
+    <img src="/images/user/user.png" alt="user" class="user">
+
+    <h1 class="login-title">Login Here</h1>
+
+    <form id="form" action="/log-in" method="POST">
+        <p class="t">Username</p>
+         {{#each errorMessages}}
+    <div class="errorMessage">{{this.u_error}}</div>
+    {{/each}}
+        <input id="input" type="text" class="inputbox" id="username" name="email" placeholder="Enter Username">
+        
+        <p class="t">Password</p>
+        {{#each errorMessages}}
+    <div class="errorMessage">{{this.p_error}}</div>
+    {{/each}}
+        <input id="input" type="password" class="inputbox" name="password" id="password" placeholder="Password">                
+        
+        <br>
+        <input id="input" type="submit" class="login-button" value="Login">
+        <a href="/signup">Don't have an account?</a>
+    </form>
+</div>

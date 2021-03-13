@@ -1,0 +1,25 @@
+<div class="display-sec">
+      {{!-- {{#each foundMovie}} --}}
+      <div class="display-movie">
+        <img src="images/regPosters/{{item.bigPoster}}" alt="{{item.movieName}}">
+      </div>
+      {{!-- {{/each}} --}}
+    </div>
+
+    <div class="desc-sec">
+      <p class="desc-title">{{item.movieName}}</p>
+      <p class="beta-desc">{{item.length}} | {{item.tags}} </p>
+      <P class="beta-desc">IMDb rating: {{item.imdb}}</P>
+      <p class="beta-desc">About {{item.movieName}}:</p>
+      <p class="beta-desc">{{item.about}}</p>
+
+      <button class="buy">
+       <a href="#">Rent for {{item.Rprice}}</a>
+      </button>
+      <button class="buy">
+       <a href="#">Buy for {{item.Bprice}}</a>
+      </button>
+
+    </div>
+
+    <br>
