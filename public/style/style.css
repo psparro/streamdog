@@ -338,5 +338,29 @@ ul{
     color: red;
 }
 
+.dashboard_body{
+    width: 95%;
+    margin: auto;
+}
+
+.greeting{
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    color: rgb(229, 9, 22);
+}
+
+.logo_png{
+    display: flex;
+    margin: auto;
+}
+
+.sub_greet{
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+}
+
+
 
 
