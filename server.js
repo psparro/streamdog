@@ -77,36 +77,36 @@ app.post("/signup", (req,res) => {
     else{
 
         res.redirect("dashboard");
-        // const {f_name, l_name, email} = req.body;
+        const {f_name, l_name, email} = req.body;
 
 
-        // sgMail.setApiKey(API);
+        sgMail.setApiKey(API);
         
-        // const html = `<bold><h2>Hello ${f_name} ${l_name}</h2></bold>
-        // <h2>You are signed up.          
-        // <br><br>
-        // Regards<br>
-        // Parth Patel<br>
-        // CEO STREAMDOG
-        // </h2>
-        // `;
+        const html = `<bold><h2>Hello ${f_name} ${l_name}</h2></bold>
+        <h2>You are signed up.          
+        <br><br>
+        Regards<br>
+        Parth Patel<br>
+        CEO STREAMDOG
+        </h2>
+        `;
 
-        // const msg = {
-        //   to: `${email}`,
-        //   from: {
-        //       name: 'STREAMDOG',
-        //       email: 'parthjpatel00@gmail.com'
-        //   },
-        //   subject: 'Welcome to STREAMDOG!',
-        //   html: html,
-        // };
-        // sgMail.send(msg)
-        // .then(() => {
-        //     res.redirect("dashboard");
-        // })
-        // .catch(err => {
-        //     console.log(`Error while post: ${err}`);
-        // });
+        const msg = {
+          to: `${email}`,
+          from: {
+              name: 'STREAMDOG',
+              email: 'parthjpatel00@gmail.com'
+          },
+           subject: 'Welcome to STREAMDOG!',
+          html: html,
+        };
+        sgMail.send(msg)
+        .then(() => {
+            res.redirect("dashboard");
+        })
+        .catch(err => {
+            console.log(`Error while post: ${err}`);
+        });
     } 
 });
 
