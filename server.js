@@ -4,14 +4,23 @@ const express = require("express");
 const exphbs  = require('express-handlebars');
 const sgMail = require('@sendgrid/mail');
 const bodyParser = require('body-parser');
+const clientSessions = require("client-sessions");
+
+//load environment variable file
+require('dotenv').config({path:"./config/keys.env"});
 
 const app = express();
-const API = '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';
 var hbs = exphbs.create({ /* config */ });
 
 // Importing modules
 const fakeDB = require("./models/FakeDB");
-const fakeDBtv = require("./models/FakeDBtv");
+const dbForUser = require("./models/dbForUser");
+const dbForMovies = require("./models/dbForMovies");
+const movieModel = require("./models/movieDB");
+const userModel = require("./models/userDB");
+
+//Importing controllers
+const moviesController = require("./controllers/movies");
 
 // Register `hbs.engine` with the Express app.
 app.engine('handlebars', hbs.engine);
@@ -19,6 +28,8 @@ app.set('view engine', 'handlebars');
 
 // Defining static folder
 app.use(express.static('public'));
+
+// app.use("/new/",moviesController);
 
 //this tells express to make form data available via req.body in every request
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -31,6 +42,8 @@ app.get("/", (req, res) => {
         featuredTV: fakeDB.getFeaturedTV(),
     });
 });
+
+// ---------------------------------SIGN UP-----------------------------------
 
 app.get("/signup", (req,res)=>{
     res.render("signup",{
@@ -78,11 +91,10 @@ app.post("/signup", (req,res) => {
 
     else{
 
-        res.redirect("dashboard");
         const {f_name, l_name, email} = req.body;
 
 
-        sgMail.setApiKey(API);
+        sgMail.setApiKey(process.env.API);
         
         const html = `<bold><h2>Hello ${f_name} ${l_name}</h2></bold>
         <h2>You are signed up.          
@@ -104,6 +116,22 @@ app.post("/signup", (req,res) => {
         };
         sgMail.send(msg)
         .then(() => {
+            //this variable holds the value submitted from the user in the form
+            const newUser = {
+                firstName : req.body.f_name,
+                lastName : req.body.l_name,
+                email : req.body.email,
+                password : req.body.password
+            }
+
+            //create a new document and INSERT into a mongoDB collection
+            const user = new userModel(newUser);
+            user.save()
+            .then(user=>{
+                console.log(user);
+            })
+        })
+        .then(() => {
             res.redirect("dashboard");
         })
         .catch(err => {
@@ -111,6 +139,8 @@ app.post("/signup", (req,res) => {
         });
     } 
 });
+
+// ------------------------------------LOG IN---------------------------------
 
 app.get("/login", (req,res)=>{
     res.render("login",{
@@ -145,11 +175,13 @@ app.post("/login", (req, res) => {
 
 });
 
+// ------------------------------MOVIES---------------------------------------
+
 app.get("/movies/:id", (req, res) => {
     console.log(req.params.id);
     res.render("movieDesc",{
         item: fakeDB.getMovieByid(req.params.id),
-        title: "Description",
+        title: fakeDB.getMovieNameByid(req.params.id),
     })
 })
 
@@ -160,15 +192,51 @@ app.get("/allMovieTV", (req, res) => {
     })
 });
 
+app.get("/add", (req, res) => {
+    res.render("addMovie", {
+
+    })
+});
+
+app.post("/add", (req, res) => {
+    const newMovie = {
+        movieName: req.body.name,
+        about: req.body.about,
+        imdb: req.body.imdb,
+        length: req.body.length,
+        tags: req.body.tags,
+        releaseDate: req.body.releaseDate,
+        directors: req.body.directors,
+        featured: req.body.featured,
+        type: req.body.type,
+        Rprice: req.body.Rprice,
+        Bprice: req.body.Bprice,
+
+    }
+
+    const movie = new movieModel(newMovie);
+    movie.save()
+    .then(() => {
+        console.log(movie);
+        res.redirect("/allMovieTV");
+    })
+    .catch(err=>console.log(`error occured while saving the movie ${err}`));
+})
+
+// --------------------------------DASHBOARD----------------------------------
+
 app.get("/dashboard", (req, res) => {
     res.render("dashboard", {
         title: "Dashboard"
     })
-})
+});
 
 
 // --------------------------------WEB SERVER---------------------------------
-const HTTP_PORT = process.env.PORT || 3000;
+const HTTP_PORT = process.env.PORT;
+dbForMovies.initializeDB();
+dbForUser.initializeDB();
 app.listen(HTTP_PORT, () => {
     console.log(`Web server is up and running on port ${HTTP_PORT}`);
-})
+});    
+

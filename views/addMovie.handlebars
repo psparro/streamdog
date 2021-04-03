@@ -1,0 +1,210 @@
+<style>
+    #title{
+    color: var(--color-green);
+    font-weight: 600;
+    
+    
+}
+h1{
+    font-weight: 400;
+    line-height: 1.2;
+}
+p{
+    font-size: 1.125rem;
+}
+h1,p{
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+label{
+    display: flex;
+    align-items: center;
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+input,button,select,textarea{
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+.container2{
+    width: 100%;
+    margin: 3.125rem auto 0 auto;
+    padding:1.8rem 1rem;
+}
+
+.clue{
+    margin-left: 0.25rem;
+    font-size: 0.9rem;
+    color: #e4e4e4;
+}
+
+.header{
+    padding: 0 0.625rem;
+    margin-bottom: 1.875rem;
+    text-align: center;
+}
+#description{
+    font-style: italic;
+    font-weight: 200;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+
+}
+#quest{
+    color: rgb(241, 191, 98);
+    font-size: 1.5rem;
+}
+form{
+    border-radius: 0.25rem;
+}
+
+@media (min-width: 480px){
+    form{
+        padding: 2.5rem;
+    }
+}
+.form-group{
+    margin: 0 auto 1.25rem auto;
+    padding: 0.25rem;
+}
+.formControl{
+    display: block;
+    width: 100%;
+    height: 2.375rem;
+    padding: 0.375rem 0.75rem;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgb(229, 9, 22);
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+}
+.formControl:focus{
+    border-color:rgb(229, 9, 22);
+    outline: 0;
+    box-shadow:0 0 0 0.2rem rgb(229, 9, 22);
+}
+.inputRadio,
+.checkbox
+{
+    display: inline-block;
+    margin-right: 0.625rem;
+    min-height: 1.25rem;
+    min-width: 1.25rem;
+
+}
+.textarea{
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.15rem;
+    outline: none;
+    border-color: rgb(229, 9, 22);
+    border-radius: 5px;
+}
+.btn{
+    display:inline;
+    padding:0.5rem 0.75rem;
+    background: rgb(229, 9, 22);
+    color: inherit;
+    border-radius: 15px;
+    cursor: pointer;
+    outline: none;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: white;
+    border: none;
+}
+
+@media (min-width:576px){
+    .container2{
+        max-width: 540px;
+    }
+}
+@media (min-width:800px){
+    .container2{
+        max-width: 760px;
+    }
+}
+
+textarea{
+    color: black;
+}
+</style>
+
+<div class="container2">
+        <header class="header">
+            <h1 id="title" style="color: rgb(229, 9, 22);">
+                Add movie to STREAMDOG
+            </h1>
+            <p id="description">
+                Let's show our audience what we got today!
+            </p>
+        </header>
+        <form action="/add" id="survey-form" method="POST">
+
+            <div class="form-group">
+                <label id="quest">Name of movie or TV show</label>
+                <input type="text" name="name" id="name" class="formControl" placeholder="Eg. Project Power" required>
+            </div>
+
+            <div class="form-group">
+                <label id="quest">Release Date</label>
+                <input type="text" name="releaseDate"  class="formControl" placeholder="Eg. 14 August 2020 (Canada)" required>
+            </div>
+
+            <div class="form-group">
+                <label id="quest">IMDB rating</label>
+                <input  type="number" step="0.1" name="imdb" id="phone" class="formControl" placeholder="Eg. 8.2" required>
+            </div>
+
+            <div class="form-group">
+                <label id="quest">Length</label>
+                <input type="text" name="length" id="address" class="formControl" placeholder="Eg. 4 Seasons or 14 August 2020 (Canada)" required>
+            </div>
+
+            <div class="form-group">
+                <label id="quest">Buying price</label>
+                <input  type="number" step="0.01" name="Bprice" class="formControl" placeholder="Eg. 3.49" required>
+            </div>
+
+            <div class="form-group">
+                <label id="quest">Rental price</label>
+                <input  type="number" step="0.01" name="Rprice" class="formControl" placeholder="Eg. 10.49" required>
+            </div>
+
+            <div class="form-group">
+                <p id="quest">Type (Movie or TV show)</p>
+                <select name="role" required id="dropdown" class="formControl">
+                    <option value disabled selected >Select type</option>
+                    <option value="movie">Movie</option>
+                    <option value="tv">TV Show</option>
+                </select>
+            </div> 
+
+            {{!-- <div class="form-group">
+                <p id="quest">Featured?</p>
+                <label>
+                    <input type="checkbox" name="featured" class="checkbox"> True
+                </label>
+            </div> --}}
+
+            <div class="form-group">
+                <label id="quest">Tags<span class="clue">Add up to 3 tags</span></label>
+                <input type="text" name="tags" id="address" class="formControl" placeholder="Eg. Action, Crime, Sci-Fi" required>
+            </div>
+            
+            <div class="form-group">
+                <p id="quest">About this movie</p> 
+                <textarea name="about"  cols="30" rows="5"  id="feedback" class="textarea" placeholder="Try to explain about movie as much as you can"></textarea>
+            </div>
+            <div class="form-group">
+                <label id="quest">Directors</label>
+                <input type="text" name="directors" id="address" class="formControl" placeholder="Eg. Matt Duffer, Ross Duffer" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit" class="btn">Submit</button>
+            </div>
+        </form>
+    </div>

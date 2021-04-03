@@ -394,6 +394,14 @@ const movies  = {
         return foundMovie;
     },
 
+    getMovieNameByid(id)
+    {
+        const foundMovie = this.fakeDB.find((movie) => {
+            return movie.id == id;
+        })
+        return foundMovie.movieName;
+    },
+
     getFeaturedMovie()
     {
         const featuredMovie = this.getAllMovies().filter(movies => movies.featured);
