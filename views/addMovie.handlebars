@@ -142,7 +142,7 @@ textarea{
                 Let's show our audience what we got today!
             </p>
         </header>
-        <form action="/add" id="survey-form" method="POST">
+        <form action="/new/add" id="survey-form" method="POST" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label id="quest">Name of movie or TV show</label>
@@ -199,10 +199,17 @@ textarea{
                 <p id="quest">About this movie</p> 
                 <textarea name="about"  cols="30" rows="5"  id="feedback" class="textarea" placeholder="Try to explain about movie as much as you can"></textarea>
             </div>
+
             <div class="form-group">
                 <label id="quest">Directors</label>
                 <input type="text" name="directors" id="address" class="formControl" placeholder="Eg. Matt Duffer, Ross Duffer" required>
             </div>
+
+            <div class="form-group">
+                <label id="quest">Regular Poster</label>
+                <input type="file" name="regPoster" class="formControl" required>
+            </div>
+
             <div class="form-group">
                 <button type="submit" id="submit" class="btn">Submit</button>
             </div>

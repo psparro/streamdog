@@ -3,6 +3,12 @@ const express = require("express");
 const router = express.Router();
 const movieModel = require("../models/movieDB");
 
+router.get("/add", (req, res) => {
+    res.render("addMovie", {
+
+    })
+});
+
 router.post("/add", (req, res) => {
     const newMovie = {
         movieName: req.body.name,
@@ -27,4 +33,4 @@ router.post("/add", (req, res) => {
     .catch(err=>console.log(`error occured while saving the movie ${err}`));
 })
 
-// module.exports = router;
+module.exports = router;

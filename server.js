@@ -5,6 +5,7 @@ const exphbs  = require('express-handlebars');
 const sgMail = require('@sendgrid/mail');
 const bodyParser = require('body-parser');
 const clientSessions = require("client-sessions");
+const fileupload = require('express-fileupload');
 
 //load environment variable file
 require('dotenv').config({path:"./config/keys.env"});
@@ -20,7 +21,9 @@ const movieModel = require("./models/movieDB");
 const userModel = require("./models/userDB");
 
 //Importing controllers
-const moviesController = require("./controllers/movies");
+const moviesController = require("./controllers/movies.js");
+const generalController = require("./controllers/general.js");
+const signupController = require("./controllers/signup.js")
 
 // Register `hbs.engine` with the Express app.
 app.engine('handlebars', hbs.engine);
@@ -29,22 +32,19 @@ app.set('view engine', 'handlebars');
 // Defining static folder
 app.use(express.static('public'));
 
-// app.use("/new/",moviesController);
+app.use(fileupload());
+
+app.use("/new/",moviesController);
+app.use("/", generalController);
+app.use("/sign-up/", signupController);
 
 //this tells express to make form data available via req.body in every request
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // -----------------------------------ROUTS-----------------------------------
-app.get("/", (req, res) => {
-    res.render("home",{
-        title: "Home",
-        featuredMovies: fakeDB.getFeaturedMovie(),
-        featuredTV: fakeDB.getFeaturedTV(),
-    });
-});
 
 // ---------------------------------SIGN UP-----------------------------------
-
+/*
 app.get("/signup", (req,res)=>{
     res.render("signup",{
         title: "Sign Up",
@@ -139,6 +139,7 @@ app.post("/signup", (req,res) => {
         });
     } 
 });
+*/
 
 // ------------------------------------LOG IN---------------------------------
 
@@ -191,7 +192,7 @@ app.get("/allMovieTV", (req, res) => {
         title: "Movies and TV Shows"
     })
 });
-
+/*
 app.get("/add", (req, res) => {
     res.render("addMovie", {
 
@@ -220,8 +221,9 @@ app.post("/add", (req, res) => {
         console.log(movie);
         res.redirect("/allMovieTV");
     })
-    .catch(err=>console.log(`error occured while saving the movie ${err}`));
+    .catch(err=>console.log(`error occured while saving the movie: ${err}`));
 })
+*/
 
 // --------------------------------DASHBOARD----------------------------------
 
