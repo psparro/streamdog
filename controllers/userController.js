@@ -1,6 +1,39 @@
 const express = require("express");
 const router = express.Router();
 
+router.get("/login", (req,res)=>{
+    res.render("login",{
+        title: "Log In",
+    })
+});
+
+router.post("/login", (req, res) => {
+    const r_error = [];
+
+    if(req.body.email == "")
+    {
+        r_error.push({u_error: `This field must be filed.`})
+    }
+
+    if(req.body.password == "")
+    {
+        r_error.push({p_error: `Password can't be blank.`})    
+    }
+
+    if(r_error.length > 0)
+    {
+        res.render("login", {
+            title: "Log In",
+            errorMessages: r_error
+        })
+    }
+
+    else{
+        res.redirect("addMovie")
+    }
+
+});
+
 router.get("/signup", (req,res)=>{
     res.render("signup",{
         title: "Sign Up",
@@ -85,15 +118,20 @@ router.post("/signup", (req,res) => {
             user.save()
             .then(user=>{
                 console.log(user);
+                
+                res.redirect("/new/add");
             })
-        })
-        .then(() => {
-            res.redirect("dashboard");
         })
         .catch(err => {
             console.log(`Error while post: ${err}`);
         });
     } 
+});
+
+router.get("/dashboard", (req, res) => {
+    res.render("dashboard", {
+        title: "Dashboard"
+    })
 });
 
 module.exports = router;

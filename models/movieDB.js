@@ -57,6 +57,11 @@ const movieSchema = new Schema({
     Bprice:{
         type: Number,
         require: true
+    },
+
+    regPoster:
+    {
+        type: String
     }
 });
 
