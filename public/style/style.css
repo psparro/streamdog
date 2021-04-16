@@ -393,6 +393,15 @@ ul{
     flex-wrap: wrap;
 }
 
+.display-movie-desc{
+    width: 100%;
+}
+
+.display-movie-desc img{
+    width: 100%;
+
+}
+
 .display-movie{
     width: 235px;
     margin: 7px;
@@ -428,6 +437,13 @@ ul{
         height: 250px;
     }
 }
+
+.bottom-left {
+    position: absolute;
+    bottom: 10px;
+    left: 80px;
+
+  }
 
 .desc-sec{
     width: 75%;

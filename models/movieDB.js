@@ -61,7 +61,14 @@ const movieSchema = new Schema({
 
     regPoster:
     {
-        type: String
+        type: String,
+        require: true
+    },
+
+    bigPoster:
+    {
+        type: String,
+        require: true
     }
 });
 
