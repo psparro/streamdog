@@ -19,16 +19,27 @@ When you log in as a customer unfortunatily there is no service of buying movies
 Technologies used in application
 
 MongoDB cloud service is setup with collections and database
+
 User’s data is inserted into the database when the user fills out the form and hits the submit button using post method.
+
 Password is stored in encrypted format (12) with bcrypt.
+
 A Session is  created to maintain the user state with express-session.
+
 Server side validations are implimented and upon an unsuccessful authentication, the application  displays an appropriate error message.
+
 Routes that can only be accessed when users are logged-in, are protected.
+
 Both dashboards, show the user’s name(first name and lastname) and a logout link.
+
 The application directs an inventory clerk to their  dashboard and a regular user to his or her dashboard. 
+
 An Administrator can create movies & tv shows with all the necessary data.
+
 An Admin can upload a photo for a movies & tv shows files have validations.
+
 All Movies & TV Shows created are populated on the Front-End of the website, specifically the movie and tv show listing Page.
+
 
 
 
