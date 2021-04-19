@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const movieModel = require("../models/movieDB");
 const path = require("path");
+const isAdmin = require("../middleware/isAdmin");
+const isLoggedIn = require("../middleware/auth");
 
 const fakeDB = require("../models/FakeDB");
 
-router.get("/add", (req, res) => {
+router.get("/add",isLoggedIn,isAdmin, (req, res) => {
     res.render("addMovie", {
 
     })
@@ -27,31 +29,99 @@ router.post("/add", (req, res) => {
 
     }
 
-    const movie = new movieModel(newMovie);
-    req.body.featured = (req.body.featured)? true: false;
-    movie.save()
-    .then((movie) => {
-        req.files.regPoster.name = `regPoster_${movie.movieName}${path.parse(req.files.regPoster.name).ext}`;
-        req.files.bigPoster.name = `bigPoster_${movie.movieName}${path.parse(req.files.bigPoster.name).ext}`;        
-        req.files.regPoster.mv(`public/images/regPosters/${req.files.regPoster.name}`)
-        .then(() => {
-            req.files.bigPoster.mv(`public/images/bigPosters/${req.files.bigPoster.name}`)
-        })
-        .then(() => {
-            movieModel.updateOne({_id:movie._id}, {
-                regPoster: req.files.regPoster.name,
-                bigPoster: req.files.bigPoster.name,
+    const errors = [];
+    if(newMovie.movieName=="")
+    {
+        errors.push("Please Enter a movie name.");
+    }
+
+    if(newMovie.imdb=="")
+    {
+        errors.push("Please fill the IMDb section.");
+    }
+
+    if(newMovie.length=="")
+    {
+        errors.push("Please fill the length section.");
+    }
+
+    if(newMovie.tags=="")
+    {
+        errors.push("Please fill the tags section.");
+    }
+
+    if(newMovie.releaseDate=="")
+    {
+        errors.push("Please fill the Release Date.");
+    }
+    
+    if(newMovie.directors=="")
+    {
+        errors.push("Please fill the directors section.");
+    }
+
+    if(newMovie.about=="")
+    {
+        errors.push("Please fill the about section.");
+    }
+
+    if(newMovie.Rprice=="" || newMovie.Bprice < 0 ||
+    newMovie.Bprice=="" || newMovie.Rprice < 0)
+    {
+        errors.push("Please Enter a valid buy price(s)");
+    }
+
+    if (!req.files || Object.keys(req.files).length === 0 || 
+        Object.keys(req.files).length === 1) {
+        errors.push("Please insert all images");
+        
+    }
+      
+    else{
+
+          if(path.parse(req.files.regPoster.name).ext != ".jpg" && path.parse(req.files.regPoster.name).ext != ".png" && path.parse(req.files.regPoster.name).ext != ".jpeg" && path.parse(req.files.regPoster.name).ext != ".gif" &&
+          path.parse(req.files.regPoster.name).ext != ".JPG" && path.parse(req.files.regPoster.name).ext != ".PNG" && path.parse(req.files.regPoster.name).ext != ".JPEG" && path.parse(req.files.regPoster.name).ext != ".GIF" &&
+          path.parse(req.files.image.name).ext != ".jpg" && path.parse(req.files.image.name).ext != ".png" && path.parse(req.files.image.name).ext != ".JPEG" && path.parse(req.files.image.name).ext != ".GIF")
+         {
+            errors.push("Please insert images only");
+         }
+    }
+
+
+    if(errors.length >0)
+    {
+        
+        res.render("addMovie",{title:"Add Movie",errors});
+    }
+
+    else{
+        const movie = new movieModel(newMovie);
+        // req.body.featured = (req.body.featured)? true: false;
+        movie.save()
+        .then((movie) => {
+            req.files.regPoster.name = `regPoster_${movie.movieName}${path.parse(req.files.regPoster.name).ext}`;
+            req.files.bigPoster.name = `bigPoster_${movie.movieName}${path.parse(req.files.bigPoster.name).ext}`;        
+            req.files.regPoster.mv(`public/images/regPosters/${req.files.regPoster.name}`)
+            .then(() => {
+                req.files.bigPoster.mv(`public/images/bigPosters/${req.files.bigPoster.name}`)
             })
             .then(() => {
-                res.redirect(`/movies/${movie._id}`);
+                movieModel.updateOne({_id:movie._id}, {
+                    regPoster: req.files.regPoster.name,
+                    bigPoster: req.files.bigPoster.name,
+                })
+                .then(() => {
+                    res.redirect(`/movies/movieDesc/${movie._id}`);
+                })
             })
+            
         })
-        
-    })
-    .catch(err=>console.log(`error occured while saving the movie ${err}`));
+        .catch(err=>console.log(`error occured while saving the movie ${err}`));
+    }
+
 });
 
-router.get("/movies/:id", (req, res) => {
+router.get("/movieDesc/:id", (req, res) => {
     console.log(req.params.id);
     
     movieModel.findById(req.params.id)
@@ -71,7 +141,7 @@ router.get("/movies/:id", (req, res) => {
     })
     .catch(err => console.log(`Error: ${err}`))
     
-})
+});
 
 router.get("/allMovieTV", (req, res) => {
     // res.render("movielisting",{
@@ -92,7 +162,6 @@ router.get("/allMovieTV", (req, res) => {
                 tags: item.tags,
                 releaseDate: item.releaseDate,
                 directors: item.directors,
-                featured: item.featured,
                 type: item.type,
                 Rprice: item.Rprice,
                 Bprice: item.Bprice,

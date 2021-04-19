@@ -2,9 +2,8 @@
 
 const express = require("express");
 const exphbs  = require('express-handlebars');
-const sgMail = require('@sendgrid/mail');
 const bodyParser = require('body-parser');
-const clientSessions = require("client-sessions");
+const session = require('express-session');
 const fileupload = require('express-fileupload');
 
 //load environment variable file
@@ -22,7 +21,7 @@ const userModel = require("./models/userDB");
 //Importing controllers
 const moviesController = require("./controllers/moviesController.js");
 const generalController = require("./controllers/general.js");
-const signupController = require("./controllers/userController.js")
+const userController = require("./controllers/userController.js")
 
 // Register `hbs.engine` with the Express app.
 app.engine('handlebars', hbs.engine);
@@ -30,15 +29,27 @@ app.set('view engine', 'handlebars');
 
 // Defining static folder
 app.use(express.static('public'));
+//this tells express to make form data available via req.body in every request
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(fileupload());
 
-app.use("/",moviesController);
-app.use("/", generalController);
-app.use("/", signupController);
+app.use(session({
+    secret: `${process.env.SECRET_KEY}`,
+    resave: false,
+    saveUninitialized: true
+}))
 
-//this tells express to make form data available via req.body in every request
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use((req,res,next)=>{
+    res.locals.user = req.session.userInfo;
+    next();
+})
+
+app.use("/movies/",moviesController);
+app.use("/", generalController);
+app.use("/user/", userController);
+
+
 
 
 // --------------------------------WEB SERVER---------------------------------

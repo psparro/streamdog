@@ -25,12 +25,17 @@ const userSchema = new Schema({
     {
         type:String,
         required:true
+    },
+    type:
+    {
+        type:String,
+        default:"User"
     }
 });
 
 userSchema.pre("save", function (next) {
     // salt generates random text and it is passed with password and generates a string
-    bcrypt.genSalt(10)
+    bcrypt.genSalt(12)
     .then((salt) => {
         bcrypt.hash(this.password, salt)
         .then((encryptPassword) => {

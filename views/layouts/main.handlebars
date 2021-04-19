@@ -46,13 +46,17 @@
     <header>
 	<nav>
         <ul class="menu">
-            <li class="logo"><img src="./images/logo/logof.png" alt="STREAMDOG"></li>
+            <li class="logo"><img src="/images/logo/logof.png" alt="STREAMDOG"></li>
             <li class="item"><a href="/">Home</a></li>
             {{!-- <li class="item"><a href="#">About</a></li> --}}
-            <li class="item"><a href="/allMovieTV">Movies</a></li>
+            <li class="item"><a href="/movies/allMovieTV">Movies</a></li>
             </li>
-            <li class="item button"><a href="/login">Log In</a></li>
-            <li class="item button secondary"><a href="/signup">Sign Up</a></li>
+			{{#if user}}
+				<li class="item button secondary"><a href="/user/logout">Log Out</a></li>
+			{{else}}
+				<li class="item button"><a href="/user/signup">Sign Up</a></li>
+            	<li class="item button secondary"><a href="/user/login">Log In</a></li>
+			{{/if}}
             <li class="toggle"><span class="bars"></span></li>
         </ul>
     </nav>

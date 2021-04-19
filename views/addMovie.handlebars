@@ -142,7 +142,7 @@ textarea{
                 Let's show our audience what we got today!
             </p>
         </header>
-        <form action="/add" id="survey-form" method="POST" enctype="multipart/form-data">
+        <form action="/movies/add" id="survey-form" method="POST" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label id="quest">Name of movie or TV show</label>
@@ -183,6 +183,15 @@ textarea{
                 </select>
             </div> 
 
+            <div class="form-group">
+                <p id="quest">Featured?</p>
+                <select name="featured" required id="dropdown" class="formControl">
+                    <option value disabled selected >Select answer</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div> 
+
             {{!-- <div class="form-group">
                 <p id="quest">Featured?</p>
                 <label>
@@ -214,6 +223,9 @@ textarea{
                 <label id="quest">Big Poster</label>
                 <input type="file" name="bigPoster" class="formControl" required>
             </div>
+
+                    {{#each errors}}<div class="errorMessage">{{this}}</div>{{/each}}
+
 
             <div class="form-group">
                 <button type="submit" id="submit" class="btn">Submit</button>

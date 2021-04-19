@@ -38,9 +38,10 @@ const movieSchema = new Schema({
         require: true
     },
 
-    featured:{
-        type: Boolean,
-        default: false,
+    featured:
+    {
+        type: Number,
+        default: 0,
         require: true
     },
 
